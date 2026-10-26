@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
-import { useCarrinho } from '../context/carrinhoContexto';
+import { useCarrinho } from '../../hooks/useCarrinho';
 
-export function Cabecalho() {
+export function Header() {
     const { quantidadeTotal } = useCarrinho();
 
     return (

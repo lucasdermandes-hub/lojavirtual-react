@@ -1,9 +1,9 @@
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'react-router-dom';
-import { Campo } from '../components/Campo';
-import { ResumoCompra } from '../components/ResumoCompra';
-import { useCarrinho } from '../context/carrinhoContexto';
+import { Campo } from '../components/atoms/Campo';
+import { ResumoCompra } from '../components/organisms/ResumoCompra';
+import { useCarrinho } from '../hooks/useCarrinho';
 import { usePagamento } from '../hooks/usePagamento';
 import { esquemaPagamento, METODOS_PAGAMENTO } from '../utils/esquemaPagamento';
 import { formatarCep, formatarCvv, formatarNumeroCartao, formatarValidade } from '../utils/pagamento';

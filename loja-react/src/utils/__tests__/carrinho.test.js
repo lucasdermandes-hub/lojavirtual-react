@@ -4,7 +4,7 @@ import {
     calcularFrete,
     calcularSubtotal,
     carrinhoReducer,
-} from '../carrinhoReducer';
+} from '../carrinho';
 
 const teclado = {
     id: '1',

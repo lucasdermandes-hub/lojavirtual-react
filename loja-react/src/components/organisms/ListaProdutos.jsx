@@ -1,8 +1,8 @@
 import { useEffect, useMemo, useState } from 'react';
-import { useCarrinho } from '../context/carrinhoContexto';
-import { listarProdutos } from '../services/produtos';
-import { filtrarProdutos } from '../utils/busca';
-import { formatarMoeda } from '../utils/moeda';
+import { useCarrinho } from '../../hooks/useCarrinho';
+import { listarProdutos } from '../../services/api';
+import { filtrarProdutos } from '../../utils/busca';
+import { formatarMoeda } from '../../utils/moeda';
 
 export function ListaProdutos() {
     const [produtos, setProdutos] = useState([]);

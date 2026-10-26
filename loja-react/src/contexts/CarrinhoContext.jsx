@@ -1,12 +1,13 @@
-import { useEffect, useMemo, useReducer } from 'react';
-import { CarrinhoContext } from './carrinhoContexto';
+import { createContext, useEffect, useMemo, useReducer } from 'react';
 import {
     acoesCarrinho,
     calcularFrete,
     calcularQuantidadeTotal,
     calcularSubtotal,
     carrinhoReducer,
-} from './carrinhoReducer';
+} from '../utils/carrinho';
+
+export const CarrinhoContext = createContext(null);
 
 const CHAVE_ARMAZENAMENTO = 'loja-react:carrinho';
 

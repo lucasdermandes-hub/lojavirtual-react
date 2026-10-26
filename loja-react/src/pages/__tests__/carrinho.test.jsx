@@ -2,15 +2,15 @@ import { beforeEach, describe, expect, it } from 'vitest';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { MemoryRouter, Route, Routes } from 'react-router-dom';
-import { Cabecalho } from '../../components/Cabecalho';
-import { CarrinhoProvider } from '../../context/CarrinhoProvider';
+import { Header } from '../../components/organisms/Header';
+import { CarrinhoProvider } from '../../contexts/CarrinhoContext';
 import { Carrinho } from '../Carrinho';
 
 function renderizarCarrinho() {
     return render(
         <CarrinhoProvider>
             <MemoryRouter initialEntries={['/']}>
-                <Cabecalho />
+                <Header />
                 <Routes>
                     <Route path="/" element={<Carrinho />} />
                 </Routes>

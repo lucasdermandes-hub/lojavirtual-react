@@ -1,4 +1,4 @@
-import { formatarMoeda } from '../utils/moeda';
+import { formatarMoeda } from '../../utils/moeda';
 
 export function ResumoCompra({ subtotal, frete, total, quantidadeTotal = 0 }) {
     return (

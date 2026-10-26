@@ -18,4 +18,12 @@ export default defineConfig([
       parserOptions: { ecmaFeatures: { jsx: true } },
     },
   },
+  {
+    // Contextos exportam provider + createContext no mesmo arquivo,
+    // o que o react-refresh não aceita por padrão.
+    files: ['src/contexts/**/*.{js,jsx}'],
+    rules: {
+      'react-refresh/only-export-components': 'off',
+    },
+  },
 ])

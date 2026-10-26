@@ -1,8 +1,8 @@
 import { Link } from 'react-router-dom';
-import { ItemCarrinho } from '../components/ItemCarrinho';
-import { ListaProdutos } from '../components/ListaProdutos';
-import { ResumoCompra } from '../components/ResumoCompra';
-import { useCarrinho } from '../context/carrinhoContexto';
+import { ItemCarrinho } from '../components/molecules/ItemCarrinho';
+import { ListaProdutos } from '../components/organisms/ListaProdutos';
+import { ResumoCompra } from '../components/organisms/ResumoCompra';
+import { useCarrinho } from '../hooks/useCarrinho';
 
 export function Carrinho() {
     const { itens, quantidadeTotal, subtotal, frete, total, atualizarQuantidade, remover } = useCarrinho();

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useCarrinho } from '../context/carrinhoContexto';
+import { useCarrinho } from './useCarrinho';
 import { verificarDigitosIguais } from '../utils/pagamento';
 
 export function usePagamento() {

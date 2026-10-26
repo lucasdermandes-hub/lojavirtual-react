@@ -1,4 +1,4 @@
-import { formatarMoeda } from '../utils/moeda';
+import { formatarMoeda } from '../../utils/moeda';
 
 export function ItemCarrinho({ item, onAlterarQuantidade, onRemover }) {
     const subtotal = item.preco * item.quantidade;

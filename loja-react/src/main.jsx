@@ -1,13 +1,17 @@
 import { StrictMode } from 'react'
 import { createRoot } from 'react-dom/client'
-import './index.css'
+import { BrowserRouter } from 'react-router-dom'
+import './assets/estilos/globais.css'
+import './assets/estilos/componentes.css'
 import App from './App.jsx'
-import { CarrinhoProvider } from './context/CarrinhoProvider.jsx'
+import { CarrinhoProvider } from './contexts/CarrinhoContext.jsx'
 
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <CarrinhoProvider>
-      <App />
-    </CarrinhoProvider>
+    <BrowserRouter>
+      <CarrinhoProvider>
+        <App />
+      </CarrinhoProvider>
+    </BrowserRouter>
   </StrictMode>,
 )
