@@ -1,0 +1,112 @@
+{
+  "produtos": [
+    {
+      "id": "1",
+      "nome": "Teclado Gamer sem fio",
+      "descricao": "Teclado gamer sem fio com latência ultrabaixa, iluminação RGB dinâmica e bateria de longa duração.",
+      "preco": 170.00,
+      "categoria": "Informática",
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQsEdbpQgJxcwXBJpqICBATrhdgSdhOgPHkn11JC2wZjRgsyr2_yVZnNE9Z&s=10",
+      "estoque": 80
+    },
+    {
+      "id": "2",
+      "nome": "Headset Gamer sem fio",
+      "descricao": "Headset gamer sem fio com áudio imersivo, microfone com cancelamento de ruído e almofadas confortáveis para longas sessões.",
+      "preco": 250.00,
+      "categoria": "Informática",
+      "imagem": "https://images.kabum.com.br/produtos/fotos/596281/headset-gamer-sem-fio-redragon-mira-7-1-rgb-bluetooth-2-4ghz-p3-h868-preto-redragon-p3-h868_1737376862_gg.jpg",
+      "estoque": 36
+    },
+    {
+      "id": "3",
+      "nome": "PC Gamer i5, RTX 3050, 16GB de RAM",
+      "descricao": "PC gamer com processador Intel Core i5, placa de vídeo NVIDIA GeForce RTX 3050 e 16GB de RAM, ideal para jogos em Full HD e produtividade.",
+      "preco": 3500.00,
+      "categoria": "Informática",
+      "imagem": "https://media.pichau.com.br/media/catalog/product/cache/74c1057f7991b4edb2bc7bdaa94de933/p/c/pc-pichau-cv100-gpu-m-001_1_1.jpg",
+      "estoque": 18
+    },
+    {
+      "id": "4",
+      "nome": "iPhone 18 Pro Max",
+      "descricao": "Smartphone Apple iPhone 18 Pro Max com tela ampla, câmera avançada e alto desempenho.",
+      "preco": 9999.00,
+      "categoria": "Informática",
+      "imagem": "https://www.apple.com/newsroom/images/2026/09/apple-debuts-iphone-18-pro-and-iphone-18-pro-max/geo/Apple-iPhone-18-Pro-2up-Geo-260909_inline.jpg.large.jpg",
+      "estoque": 25
+    },
+    {
+      "id": "5",
+      "nome": "Bola de Futebol",
+      "descricao": "Bola de futebol de campo com acabamento resistente e ótimo controle.",
+      "preco": 60.00,
+      "categoria": "Esportes",
+      "imagem": "https://cdn.awsli.com.br/2500x2500/1598/1598989/produto/162029599/310d59993b.jpg",
+      "estoque": 160
+    },
+    {
+      "id": "6",
+      "nome": "Camisa de Futebol do Santos FC",
+      "descricao": "Camisa oficial do Santos FC em tecido leve e respirável.",
+      "preco": 299.90,
+      "categoria": "Esportes",
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ9tI678hGNLpQ__JNgf6EVfb-DbliXoXUKrBlqUPAnTwEmjMOEW14YrVg&s=10",
+      "estoque": 100
+    },
+    {
+      "id": "7",
+      "nome": "Camisa da Seleção Brasileira",
+      "descricao": "Camisa da Seleção Brasileira em tecido leve e respirável, ideal para torcer em qualquer jogo.",
+      "preco": 349.90,
+      "categoria": "Esportes",
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTcmk-mgs-OzXM7D836NhJypf2NmbAZoNFt5D2B9Vecv8xdn_bzDXmnEdeg&s=10",
+      "estoque": 200
+    },
+    {
+      "id": "8",
+      "nome": "Chuteira de Futsal",
+      "descricao": "Chuteira de futsal com solado de borracha antiderrapante e boa aderência na quadra.",
+      "preco": 199.90,
+      "categoria": "Esportes",
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcR7VcafQppJsF-3Tl_hw-m3zH6BqRjBqu0liyYE9S2-Ag&s",
+      "estoque": 120
+    },
+    {
+      "id": "9",
+      "nome": "Cama de Cachorro",
+      "descricao": "Cama macia e confortável para cães, com base antiderrapante e fácil de lavar.",
+      "preco": 120.00,
+      "categoria": "Pets",
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRY8nBMwQMdEml9cg-vLLZsc-XCfP9MYH05reYuBxFuitc_Vsjs0VjUMog&s=10",
+      "estoque": 70
+    },
+    {
+      "id": "10",
+      "nome": "Comedouro",
+      "descricao": "Comedouro resistente e de fácil limpeza para cães e gatos.",
+      "preco": 35.00,
+      "categoria": "Pets",
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJnLNBcFFWBG2qCg3DC7gvF9FbWEI4zaeIZa2MbC7df63ipsFWXxj2Quk7&s=10",
+      "estoque": 100
+    },
+    {
+      "id": "11",
+      "nome": "Brinquedo para Cachorro",
+      "descricao": "Brinquedo durável para cães, ideal para morder e brincar.",
+      "preco": 25.00,
+      "categoria": "Pets",
+      "imagem": "https://cdn.awsli.com.br/1628/1628599/produto/369580711/brinquedo-para-pet-bola-com-alimento--1--0jrz27f408.jpg",
+      "estoque": 30
+    },
+    {
+      "id": "12",
+      "nome": "Petisco para Cães",
+      "descricao": "Petisco saboroso para cães, perfeito para premiar e agradar.",
+      "preco": 20.00,
+      "categoria": "Pets",
+      "imagem": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTEnhXJCdsvQtZIsnNfGSe2ZnyOKg1ByC28dfoFfAr_nYObuXrhv52j0s46&s=10",
+      "estoque": 50
+    }
+  ]
+}
