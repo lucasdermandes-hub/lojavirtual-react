@@ -1,4 +1,4 @@
-/* ---------- Cabeçalho ---------- */
+/* Cabeçalho */
 
 .cabecalho {
   display: flex;
@@ -46,7 +46,7 @@
   text-align: center;
 }
 
-/* ---------- Layout ---------- */
+/* Layout  */
 
 .pagina {
   flex: 1;
@@ -73,7 +73,7 @@
   text-align: center;
 }
 
-/* ---------- Botões ---------- */
+/* Botões */
 
 .botao-primario,
 .botao-secundario {
@@ -120,7 +120,7 @@
   color: var(--cor-primaria);
 }
 
-/* ---------- Carrinho ---------- */
+/* Carrinho */
 
 .carrinho-grade,
 .checkout-grade {
@@ -263,7 +263,7 @@
   color: var(--cor-erro);
 }
 
-/* ---------- Resumo ---------- */
+/* Resumo */
 
 .resumo-compra {
   padding: 20px;
@@ -340,7 +340,7 @@
   white-space: nowrap;
 }
 
-/* ---------- Lista de produtos ---------- */
+/* Lista de produtos */
 
 .lista-produtos {
   margin-top: 28px;
@@ -543,7 +543,7 @@
   accent-color: var(--cor-primaria);
 }
 
-/* ---------- Páginas de resultado ---------- */
+/*Páginas de resultado*/
 
 .mensagem {
   max-width: 640px;

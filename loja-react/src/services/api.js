@@ -2,22 +2,36 @@ import db from '../../db.json';
 
 const BASE_API = 'http://localhost:3001';
 
-/**
- * Busca os produtos na API (json-server) e usa o db.json local como
- * fallback para o projeto funcionar mesmo sem a API em execução.
- */
+export async function buscarProdutos() {
+  try {
+    const resposta = await fetch(`${BASE_API}/produtos`);
+
+    if (!resposta.ok) throw new Error('Falha ao consultar a API');
+
+    const produtos = await resposta.json();
+
+    if (Array.isArray(produtos) && produtos.length > 0) return produtos;
+
+    return db.produtos;
+  } catch {
+    return db.produtos;
+  }
+}
+
 export async function listarProdutos() {
-    try {
-        const resposta = await fetch(`${BASE_API}/produtos`);
+  return buscarProdutos();
+}
 
-        if (!resposta.ok) throw new Error('Falha ao consultar a API');
+export async function buscarProdutoPorId(id) {
+  try {
+    const resposta = await fetch(`${BASE_API}/produtos/${id}`);
 
-        const produtos = await resposta.json();
+    if (!resposta.ok) throw new Error('Produto não encontrado na API');
 
-        if (Array.isArray(produtos) && produtos.length > 0) return produtos;
-
-        return db.produtos;
-    } catch {
-        return db.produtos;
-    }
+    return await resposta.json();
+  } catch {
+    const produto = db.produtos.find((item) => String(item.id) === String(id));
+    if (!produto) throw new Error('Produto não encontrado!');
+    return produto;
+  }
 }
