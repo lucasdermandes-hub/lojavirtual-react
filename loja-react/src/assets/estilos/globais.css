@@ -1,9 +1,12 @@
 :root {
+  /* Paleta Neutra (Tema Claro padrão) */
   --cor-fundo: #f1f5f9;
   --cor-superficie: #ffffff;
   --cor-texto: #0f172a;
   --cor-texto-suave: #64748b;
   --cor-borda: #e2e8f0;
+
+  /* Cores de Destaque e Ação */
   --cor-primaria: #4f46e5;
   --cor-primaria-escura: #4338ca;
   --cor-primaria-clara: #eef2ff;
@@ -11,11 +14,13 @@
   --cor-erro: #dc2626;
   --cor-aviso: #b45309;
 
+  /* Sombras e Raios */
   --sombra: 0 10px 30px rgba(15, 23, 42, 0.08);
   --sombra-pequena: 0 4px 12px rgba(15, 23, 42, 0.06);
   --raio: 12px;
   --raio-pequeno: 8px;
 
+  /* Fontes */
   --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
   --mono: ui-monospace, Consolas, monospace;
 
@@ -28,6 +33,21 @@
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  transition: background-color 0.25s ease, color 0.25s ease;
+}
+
+/* Variação: Tema Escuro (ativado ao adicionar a classe .tema-escuro no body ou html) */
+[data-theme='escuro'],
+.tema-escuro {
+  --cor-fundo: #0f172a;
+  --cor-superficie: #1e293b;
+  --cor-texto: #f8fafc;
+  --cor-texto-suave: #94a3b8;
+  --cor-borda: #334155;
+  --cor-primaria-clara: #312e81;
+
+  --sombra: 0 10px 30px rgba(0, 0, 0, 0.35);
+  --sombra-pequena: 0 4px 12px rgba(0, 0, 0, 0.25);
 }
 
 *,
@@ -39,6 +59,8 @@
 body {
   margin: 0;
   min-height: 100vh;
+  background-color: var(--cor-fundo);
+  color: var(--cor-texto);
 }
 
 #root {
@@ -91,6 +113,8 @@ input,
 select {
   font: inherit;
   color: inherit;
+  background-color: var(--cor-fundo);
+  border: 1px solid var(--cor-borda);
 }
 
 @media (max-width: 640px) {

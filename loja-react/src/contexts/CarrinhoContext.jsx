@@ -1,3 +1,4 @@
+
 import { createContext, useState, useMemo } from 'react';
 import PropTypes from 'prop-types';
 
@@ -6,13 +7,15 @@ export const CarrinhoContext = createContext();
 export function CarrinhoProvider({ children }) {
   const [itens, setItens] = useState([]);
 
-  // Adiciona item ao carrinho 
+  // Adiciona um produto ao carrinho
   function adicionarItem(produto) {
     setItens((itensAtuais) => {
-      const itemExistente = itensAtuais.find((item) => item.id === produto.id);
+      const itemExistente = itensAtuais.find(
+        (item) => item.id === produto.id
+      );
 
       if (itemExistente) {
-        // Aqui bloqueia o carrinho se atingir o estoque máximo
+        // Impede que a quantidade ultrapasse o estoque
         if (itemExistente.quantidade >= produto.estoque) {
           return itensAtuais;
         }
@@ -24,12 +27,17 @@ export function CarrinhoProvider({ children }) {
         );
       }
 
-      // Se não existe no carrinho, adiciona com quantidade 1
+      // Não adiciona se não houver estoque
+      if (produto.estoque < 1) {
+        return itensAtuais;
+      }
+
+      // Adiciona o produto com quantidade inicial igual a 1
       return [...itensAtuais, { ...produto, quantidade: 1 }];
     });
   }
 
-  // Altera quantidade respeitando estoque e mínimo de 1 (RF08)
+  // Altera a quantidade respeitando o estoque e o mínimo de 1
   function alterarQuantidade(id, novaQuantidade) {
     if (novaQuantidade < 1) return;
 
@@ -39,8 +47,10 @@ export function CarrinhoProvider({ children }) {
           if (novaQuantidade > item.estoque) {
             return item;
           }
+
           return { ...item, quantidade: novaQuantidade };
         }
+
         return item;
       })
     );
@@ -48,39 +58,45 @@ export function CarrinhoProvider({ children }) {
 
   // Remove um produto do carrinho
   function removerItem(id) {
-    setItens((itensAtuais) => itensAtuais.filter((item) => item.id !== id));
+    setItens((itensAtuais) =>
+      itensAtuais.filter((item) => item.id !== id)
+    );
   }
 
-  // Esvazia o carrinho após compra aprovada (RF13)
+  // Limpa o carrinho após uma compra aprovada
   function limparCarrinho() {
     setItens([]);
   }
 
-  // Quantidade total de itens calculada com useMemo (RF06 / RF09)
+  // Calcula a quantidade total de unidades
   const quantidadeTotal = useMemo(() => {
-    return itens.reduce((acumulador, item) => acumulador + item.quantidade, 0);
-  }, [itens]);
-
-  // Valor total em reais calculado com useMemo (RF06 / RF08 / RF10)
-  const valorTotal = useMemo(() => {
     return itens.reduce(
-      (acumulador, item) => acumulador + item.preco * item.quantidade,
+      (acumulador, item) => acumulador + item.quantidade,
       0
     );
   }, [itens]);
 
+  // Calcula o valor total da compra
+  const valorTotal = useMemo(() => {
+    return itens.reduce(
+      (acumulador, item) =>
+        acumulador + item.preco * item.quantidade,
+      0
+    );
+  }, [itens]);
+
+  const valor = {
+    itens,
+    adicionarItem,
+    alterarQuantidade,
+    removerItem,
+    limparCarrinho,
+    quantidadeTotal,
+    valorTotal,
+  };
+
   return (
-    <CarrinhoContext.Provider
-      value={{
-        itens,
-        adicionarItem,
-        alterarQuantidade,
-        removerItem,
-        limparCarrinho,
-        quantidadeTotal,
-        valorTotal,
-      }}
-    >
+    <CarrinhoContext.Provider value={valor}>
       {children}
     </CarrinhoContext.Provider>
   );
