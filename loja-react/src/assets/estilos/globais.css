@@ -36,8 +36,9 @@
   transition: background-color 0.25s ease, color 0.25s ease;
 }
 
-/* Variação: Tema Escuro (ativado ao adicionar a classe .tema-escuro no body ou html) */
+/* Variação: Tema Escuro (ativado pelo atributo data-tema/data-theme no <html>) */
 [data-theme='escuro'],
+[data-tema='escuro'],
 .tema-escuro {
   --cor-fundo: #0f172a;
   --cor-superficie: #1e293b;

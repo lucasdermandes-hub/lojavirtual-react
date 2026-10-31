@@ -19,6 +19,24 @@
   letter-spacing: -0.4px;
 }
 
+.logo-brivio {
+  display: block;
+  height: 54px;
+  width: auto;
+}
+
+.logo-brivio--escuro {
+  display: none;
+}
+
+[data-tema='escuro'] .logo-brivio--claro {
+  display: none;
+}
+
+[data-tema='escuro'] .logo-brivio--escuro {
+  display: block;
+}
+
 .link-cabecalho {
   display: inline-flex;
   align-items: center;
@@ -647,6 +665,10 @@
 }
 
 @media (max-width: 640px) {
+  .logo-brivio {
+    height: 42px;
+  }
+
   .item-carrinho {
     grid-template-columns: 64px minmax(0, 1fr);
   }
