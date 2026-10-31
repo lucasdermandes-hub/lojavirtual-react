@@ -6,7 +6,8 @@ import { verificarDigitosIguais } from '../utils/pagamento';
 export function usePagamento() {
     const [processando, setProcessando] = useState(false);
     const navigate = useNavigate();
-    const { itens, total, limpar } = useCarrinho();
+
+    const { itens, valorTotal, limparCarrinho } = useCarrinho();
 
     const processarPagamento = async (dadosForm) => {
         setProcessando(true);
@@ -15,7 +16,8 @@ export function usePagamento() {
         await new Promise((resolve) => setTimeout(resolve, 2000));
 
         const eGolpe =
-            dadosForm.metodoPagamento === 'cartao' && verificarDigitosIguais(dadosForm.numeroCartao);
+            dadosForm.metodoPagamento === 'cartao' &&
+            verificarDigitosIguais(dadosForm.numeroCartao);
 
         setProcessando(false);
 
@@ -38,7 +40,7 @@ export function usePagamento() {
                 uf: dadosForm.uf,
             },
             parcelas: dadosForm.parcelas ?? 1,
-            total,
+            total: valorTotal,
             itens: itens.map((item) => ({
                 id: item.id,
                 nome: item.nome,
@@ -47,7 +49,7 @@ export function usePagamento() {
             })),
         };
 
-        limpar();
+        limparCarrinho();
         navigate('/sucesso', { state: pedido });
     };
 

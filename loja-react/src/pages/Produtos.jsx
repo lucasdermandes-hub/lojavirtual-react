@@ -1,6 +1,7 @@
 import { useState, useEffect, useMemo } from 'react';
 import { buscarProdutos } from '../services/api';
 import { ProdutoCard } from '../components/molecules/ProdutoCard';
+import { CampoBusca } from '../components/atoms/CampoBusca';
 import { filtrarProdutos } from '../utils/busca';
 
 export function Produtos() {
@@ -14,6 +15,7 @@ export function Produtos() {
       try {
         setCarregando(true);
         setErro(null);
+
         const dados = await buscarProdutos();
         setProdutos(dados);
       } catch (err) {
@@ -22,6 +24,7 @@ export function Produtos() {
         setCarregando(false);
       }
     }
+
     carregar();
   }, []);
 
@@ -50,13 +53,14 @@ export function Produtos() {
     <main className="pagina">
       <header style={{ marginBottom: '24px' }}>
         <h1>Nosso Catálogo</h1>
+
         <div className="busca">
-          <input
-            type="text"
+          <CampoBusca
+            valor={termoBusca}
+            onChange={setTermoBusca}
             placeholder="Buscar por nome do produto..."
-            value={termoBusca}
-            onChange={(e) => setTermoBusca(e.target.value)}
           />
+
           {termoBusca && (
             <button
               type="button"
@@ -71,7 +75,8 @@ export function Produtos() {
 
       {produtosFiltrados.length === 0 ? (
         <div className="vazio">
-          <p>Nenhum produto encontrado para &quot;{termoBusca}&quot;.</p>
+          <p>Nenhum produto encontrado para "{termoBusca}".</p>
+
           <button
             type="button"
             className="botao-primario"

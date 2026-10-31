@@ -1,16 +1,35 @@
+
 import { useForm, useWatch } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Link } from 'react-router-dom';
+
 import { Campo } from '../components/atoms/Campo';
 import { ResumoCompra } from '../components/organisms/ResumoCompra';
+
 import { useCarrinho } from '../hooks/useCarrinho';
 import { usePagamento } from '../hooks/usePagamento';
-import { esquemaPagamento, METODOS_PAGAMENTO } from '../utils/esquemaPagamento';
-import { formatarCep, formatarCvv, formatarNumeroCartao, formatarValidade } from '../utils/pagamento';
+
+import {
+    esquemaPagamento,
+    METODOS_PAGAMENTO,
+} from '../utils/esquemaPagamento';
+
+import {
+    formatarCep,
+    formatarCvv,
+    formatarNumeroCartao,
+    formatarValidade,
+} from '../utils/pagamento';
+
 import { formatarMoeda } from '../utils/moeda';
 
 export function Pagamento() {
-    const { itens, quantidadeTotal, subtotal, frete, total } = useCarrinho();
+    const { itens, quantidadeTotal, valorTotal } = useCarrinho();
+
+    const subtotal = valorTotal;
+    const frete = 0;
+    const total = subtotal + frete;
+
     const { processando, processarPagamento } = usePagamento();
 
     const {
@@ -28,16 +47,22 @@ export function Pagamento() {
         },
     });
 
-    const metodoPagamento = useWatch({ control, name: 'metodoPagamento' });
+    const metodoPagamento = useWatch({
+        control,
+        name: 'metodoPagamento',
+    });
+
     const vazio = itens.length === 0;
 
     if (vazio) {
         return (
             <main className="pagina">
                 <h1>Pagamento</h1>
+
                 <section className="carrinho-vazio">
                     <p>Não há itens para pagar.</p>
-                    <Link to="/" className="botao-secundario">
+
+                    <Link to="/carrinho" className="botao-secundario">
                         Voltar ao carrinho
                     </Link>
                 </section>
@@ -50,7 +75,11 @@ export function Pagamento() {
             <h1>Checkout</h1>
 
             <div className="checkout-grade">
-                <form className="form-pagamento" onSubmit={handleSubmit(processarPagamento)} noValidate>
+                <form
+                    className="form-pagamento"
+                    onSubmit={handleSubmit(processarPagamento)}
+                    noValidate
+                >
                     <fieldset className="grupo">
                         <legend>Forma de pagamento</legend>
 
@@ -59,7 +88,9 @@ export function Pagamento() {
                                 <label
                                     key={metodo.value}
                                     className={`opcao-pagamento ${
-                                        metodoPagamento === metodo.value ? 'selecionada' : ''
+                                        metodoPagamento === metodo.value
+                                            ? 'selecionada'
+                                            : ''
                                     }`}
                                 >
                                     <input
@@ -69,6 +100,7 @@ export function Pagamento() {
                                             onChange: () => clearErrors(),
                                         })}
                                     />
+
                                     <span>{metodo.label}</span>
                                 </label>
                             ))}
@@ -79,7 +111,11 @@ export function Pagamento() {
                         <fieldset className="grupo">
                             <legend>Dados do cartão</legend>
 
-                            <Campo id="titular" label="Nome do titular do cartão" erro={errors.titular?.message}>
+                            <Campo
+                                id="titular"
+                                label="Nome do titular do cartão"
+                                erro={errors.titular?.message}
+                            >
                                 <input
                                     id="titular"
                                     type="text"
@@ -89,7 +125,11 @@ export function Pagamento() {
                                 />
                             </Campo>
 
-                            <Campo id="numeroCartao" label="Número do cartão" erro={errors.numeroCartao?.message}>
+                            <Campo
+                                id="numeroCartao"
+                                label="Número do cartão"
+                                erro={errors.numeroCartao?.message}
+                            >
                                 <input
                                     id="numeroCartao"
                                     type="text"
@@ -98,14 +138,21 @@ export function Pagamento() {
                                     autoComplete="cc-number"
                                     {...register('numeroCartao', {
                                         onChange: (evento) => {
-                                            evento.target.value = formatarNumeroCartao(evento.target.value);
+                                            evento.target.value =
+                                                formatarNumeroCartao(
+                                                    evento.target.value
+                                                );
                                         },
                                     })}
                                 />
                             </Campo>
 
                             <div className="linha-tripla">
-                                <Campo id="validade" label="Validade (MM/AA)" erro={errors.validade?.message}>
+                                <Campo
+                                    id="validade"
+                                    label="Validade (MM/AA)"
+                                    erro={errors.validade?.message}
+                                >
                                     <input
                                         id="validade"
                                         type="text"
@@ -114,13 +161,20 @@ export function Pagamento() {
                                         autoComplete="cc-exp"
                                         {...register('validade', {
                                             onChange: (evento) => {
-                                                evento.target.value = formatarValidade(evento.target.value);
+                                                evento.target.value =
+                                                    formatarValidade(
+                                                        evento.target.value
+                                                    );
                                             },
                                         })}
                                     />
                                 </Campo>
 
-                                <Campo id="cvv" label="CVV" erro={errors.cvv?.message}>
+                                <Campo
+                                    id="cvv"
+                                    label="CVV"
+                                    erro={errors.cvv?.message}
+                                >
                                     <input
                                         id="cvv"
                                         type="text"
@@ -129,17 +183,36 @@ export function Pagamento() {
                                         autoComplete="cc-csc"
                                         {...register('cvv', {
                                             onChange: (evento) => {
-                                                evento.target.value = formatarCvv(evento.target.value);
+                                                evento.target.value =
+                                                    formatarCvv(
+                                                        evento.target.value
+                                                    );
                                             },
                                         })}
                                     />
                                 </Campo>
 
-                                <Campo id="parcelas" label="Parcelas" erro={errors.parcelas?.message}>
-                                    <select id="parcelas" {...register('parcelas')}>
-                                        {Array.from({ length: 12 }, (_, indice) => indice + 1).map((parcela) => (
-                                            <option key={parcela} value={parcela}>
-                                                {parcela}x de {formatarMoeda(total / parcela)}
+                                <Campo
+                                    id="parcelas"
+                                    label="Parcelas"
+                                    erro={errors.parcelas?.message}
+                                >
+                                    <select
+                                        id="parcelas"
+                                        {...register('parcelas')}
+                                    >
+                                        {Array.from(
+                                            { length: 12 },
+                                            (_, indice) => indice + 1
+                                        ).map((parcela) => (
+                                            <option
+                                                key={parcela}
+                                                value={parcela}
+                                            >
+                                                {parcela}x de{' '}
+                                                {formatarMoeda(
+                                                    total / parcela
+                                                )}
                                             </option>
                                         ))}
                                     </select>
@@ -152,7 +225,11 @@ export function Pagamento() {
                         <legend>Endereço de entrega</legend>
 
                         <div className="linha-dupla">
-                            <Campo id="cep" label="CEP" erro={errors.cep?.message}>
+                            <Campo
+                                id="cep"
+                                label="CEP"
+                                erro={errors.cep?.message}
+                            >
                                 <input
                                     id="cep"
                                     type="text"
@@ -161,29 +238,40 @@ export function Pagamento() {
                                     autoComplete="postal-code"
                                     {...register('cep', {
                                         onChange: (evento) => {
-                                            evento.target.value = formatarCep(evento.target.value);
+                                            evento.target.value = formatarCep(
+                                                evento.target.value
+                                            );
                                         },
                                     })}
                                 />
                             </Campo>
 
-                            <Campo id="uf" label="UF" erro={errors.uf?.message}>
+                            <Campo
+                                id="uf"
+                                label="UF"
+                                erro={errors.uf?.message}
+                            >
                                 <input
                                     id="uf"
                                     type="text"
                                     maxLength={2}
-                                    placeholder="SP"
+                                    placeholder="SC"
                                     autoComplete="address-level1"
                                     {...register('uf', {
                                         onChange: (evento) => {
-                                            evento.target.value = evento.target.value.toUpperCase();
+                                            evento.target.value =
+                                                evento.target.value.toUpperCase();
                                         },
                                     })}
                                 />
                             </Campo>
                         </div>
 
-                        <Campo id="endereco" label="Endereço" erro={errors.endereco?.message}>
+                        <Campo
+                            id="endereco"
+                            label="Endereço"
+                            erro={errors.endereco?.message}
+                        >
                             <input
                                 id="endereco"
                                 type="text"
@@ -194,7 +282,11 @@ export function Pagamento() {
                         </Campo>
 
                         <div className="linha-dupla">
-                            <Campo id="numero" label="Número" erro={errors.numero?.message}>
+                            <Campo
+                                id="numero"
+                                label="Número"
+                                erro={errors.numero?.message}
+                            >
                                 <input
                                     id="numero"
                                     type="text"
@@ -204,7 +296,11 @@ export function Pagamento() {
                                 />
                             </Campo>
 
-                            <Campo id="complemento" label="Complemento" erro={errors.complemento?.message}>
+                            <Campo
+                                id="complemento"
+                                label="Complemento"
+                                erro={errors.complemento?.message}
+                            >
                                 <input
                                     id="complemento"
                                     type="text"
@@ -216,7 +312,11 @@ export function Pagamento() {
                         </div>
 
                         <div className="linha-dupla">
-                            <Campo id="bairro" label="Bairro" erro={errors.bairro?.message}>
+                            <Campo
+                                id="bairro"
+                                label="Bairro"
+                                erro={errors.bairro?.message}
+                            >
                                 <input
                                     id="bairro"
                                     type="text"
@@ -226,11 +326,15 @@ export function Pagamento() {
                                 />
                             </Campo>
 
-                            <Campo id="cidade" label="Cidade" erro={errors.cidade?.message}>
+                            <Campo
+                                id="cidade"
+                                label="Cidade"
+                                erro={errors.cidade?.message}
+                            >
                                 <input
                                     id="cidade"
                                     type="text"
-                                    placeholder="São Paulo"
+                                    placeholder="Tubarão"
                                     autoComplete="address-level2"
                                     {...register('cidade')}
                                 />
@@ -238,8 +342,14 @@ export function Pagamento() {
                         </div>
                     </fieldset>
 
-                    <button type="submit" className="botao-primario" disabled={processando}>
-                        {processando ? 'Processando compra...' : `Pagar ${formatarMoeda(total)}`}
+                    <button
+                        type="submit"
+                        className="botao-primario"
+                        disabled={processando}
+                    >
+                        {processando
+                            ? 'Processando compra...'
+                            : `Pagar ${formatarMoeda(total)}`}
                     </button>
                 </form>
 
@@ -257,7 +367,12 @@ export function Pagamento() {
                                 <span>
                                     {item.quantidade}× {item.nome}
                                 </span>
-                                <span>{formatarMoeda(item.preco * item.quantidade)}</span>
+
+                                <span>
+                                    {formatarMoeda(
+                                        item.preco * item.quantidade
+                                    )}
+                                </span>
                             </li>
                         ))}
                     </ul>

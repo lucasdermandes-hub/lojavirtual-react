@@ -17,7 +17,11 @@ export function TemaProvider({ children }) {
 
   useEffect(() => {
     localStorage.setItem('tema', tema);
-    document.documentElement.setAttribute('data-tema', tema);
+
+    document.documentElement.setAttribute(
+      'data-tema',
+      tema
+    );
   }, [tema]);
 
   return (

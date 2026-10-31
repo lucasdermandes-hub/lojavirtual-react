@@ -1,83 +1,84 @@
-import { useEffect, useMemo, useState } from 'react';
-import { useCarrinho } from '../../hooks/useCarrinho';
-import { listarProdutos } from '../../services/api';
-import { filtrarProdutos } from '../../utils/busca';
-import { formatarMoeda } from '../../utils/moeda';
+import { useEffect, useMemo, useState } from "react";
+
+import { listarProdutos } from "../../services/api";
+import { filtrarProdutos } from "../../utils/busca";
+
+import { CampoBusca } from "../atoms/CampoBusca";
+import { ProdutoCard } from "../molecules/ProdutoCard";
 
 export function ListaProdutos() {
-    const [produtos, setProdutos] = useState([]);
-    const [termo, setTermo] = useState('');
-    const [carregando, setCarregando] = useState(true);
-    const { adicionar, itens } = useCarrinho();
+  const [produtos, setProdutos] = useState([]);
+  const [termo, setTermo] = useState("");
+  const [carregando, setCarregando] = useState(true);
+  const [erro, setErro] = useState("");
 
-    useEffect(() => {
-        let ativo = true;
+  useEffect(() => {
+    let ativo = true;
 
-        listarProdutos().then((dados) => {
-            if (!ativo) return;
-            setProdutos(dados);
-            setCarregando(false);
-        });
+    async function carregarProdutos() {
+      try {
+        setCarregando(true);
+        setErro("");
 
-        return () => {
-            ativo = false;
-        };
-    }, []);
+        const dados = await listarProdutos();
 
-    const visiveis = useMemo(() => filtrarProdutos(produtos, termo), [produtos, termo]);
+        if (ativo) {
+          setProdutos(dados);
+        }
+      } catch {
+        if (ativo) {
+          setErro("Não foi possível carregar os produtos. Tente novamente.");
+        }
+      } finally {
+        if (ativo) {
+          setCarregando(false);
+        }
+      }
+    }
 
-    const quantidadeNoCarrinho = (id) =>
-        itens.find((item) => item.id === id)?.quantidade ?? 0;
+    carregarProdutos();
 
-    return (
-        <details className="lista-produtos">
-            <summary>Adicionar produtos ao carrinho</summary>
+    return () => {
+      ativo = false;
+    };
+  }, []);
 
-            <div className="busca">
-                <input
-                    type="search"
-                    value={termo}
-                    onChange={(evento) => setTermo(evento.target.value)}
-                    placeholder="Buscar produto pelo nome..."
-                    aria-label="Buscar produto pelo nome"
-                />
-            </div>
+  const produtosFiltrados = useMemo(() => {
+    return filtrarProdutos(produtos, termo);
+  }, [produtos, termo]);
 
-            {carregando && <p className="carregando">Carregando produtos...</p>}
+  return (
+    <section className="lista-produtos">
+      <div className="lista-produtos-cabecalho">
+        <h2>Conheça nossos produtos</h2>
+        <p>Encontre os produtos que você procura na Brivio.</p>
+      </div>
 
-            {!carregando && visiveis.length === 0 && (
-                <p className="vazio">Nenhum produto encontrado para “{termo}”.</p>
-            )}
+      <CampoBusca
+        valor={termo}
+        onChange={setTermo}
+        placeholder="Buscar produto pelo nome..."
+      />
 
-            <ul className="grade-produtos">
-                {visiveis.map((produto) => {
-                    const noCarrinho = quantidadeNoCarrinho(produto.id);
-                    const semEstoque = produto.estoque === 0;
+      {carregando && <p className="carregando">Carregando produtos...</p>}
 
-                    return (
-                        <li key={produto.id} className="cartao-produto">
-                            <img src={produto.imagem} alt={produto.nome} loading="lazy" />
-                            <div className="cartao-produto-info">
-                                <h3>{produto.nome}</h3>
-                                <span className="preco">{formatarMoeda(produto.preco)}</span>
-                                <small>
-                                    {semEstoque
-                                        ? 'Sem estoque'
-                                        : `${produto.estoque} em estoque`}
-                                </small>
-                            </div>
-                            <button
-                                type="button"
-                                className="botao-adicionar"
-                                onClick={() => adicionar(produto)}
-                                disabled={semEstoque}
-                            >
-                                {noCarrinho > 0 ? `Adicionar (+${noCarrinho})` : 'Adicionar'}
-                            </button>
-                        </li>
-                    );
-                })}
-            </ul>
-        </details>
-    );
+      {!carregando && erro && <p className="erro">{erro}</p>}
+
+      {!carregando && !erro && produtosFiltrados.length === 0 && (
+        <p className="vazio">
+          {termo
+            ? `Nenhum produto encontrado para "${termo}".`
+            : "Nenhum produto disponível no momento."}
+        </p>
+      )}
+
+      {!carregando && !erro && produtosFiltrados.length > 0 && (
+        <div className="grade-produtos">
+          {produtosFiltrados.map((produto) => (
+            <ProdutoCard key={produto.id} produto={produto} />
+          ))}
+        </div>
+      )}
+    </section>
+  );
 }

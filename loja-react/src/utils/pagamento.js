@@ -1,31 +1,37 @@
+
 export function apenasDigitos(valor) {
     return String(valor ?? '').replace(/\D/g, '');
 }
 
 export function formatarNumeroCartao(valor) {
     const digitos = apenasDigitos(valor).slice(0, 16);
+
     return digitos.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
 }
 
 export function formatarValidade(valor) {
     const digitos = apenasDigitos(valor).slice(0, 4);
+
     if (digitos.length <= 2) return digitos;
+
     return `${digitos.slice(0, 2)}/${digitos.slice(2)}`;
 }
 
 export function formatarCvv(valor) {
-    return apenasDigitos(valor).slice(0, 4);
+    return apenasDigitos(valor).slice(0, 3);
 }
 
 export function formatarCep(valor) {
     const digitos = apenasDigitos(valor).slice(0, 8);
+
     if (digitos.length <= 5) return digitos;
+
     return `${digitos.slice(0, 5)}-${digitos.slice(5)}`;
 }
 
 /**
- * Regra antifraude usada no projeto de referência: cartões com todos os
- * dígitos iguais (ex.: 1111 1111 1111 1111) são considerados tentativa de golpe.
+ * Verifica se todos os 16 dígitos do cartão são iguais.
+ * Exemplo: 1111 1111 1111 1111.
  */
 export function verificarDigitosIguais(numeroCartao) {
     const limpo = apenasDigitos(numeroCartao);
@@ -35,7 +41,10 @@ export function verificarDigitosIguais(numeroCartao) {
     return limpo.split('').every((digito) => digito === limpo[0]);
 }
 
-/** Validação de Luhn: checa se o número do cartão é matematicamente válido. */
+/**
+ * Validação de Luhn: verifica se o número do cartão
+ * é matematicamente válido.
+ */
 export function validarCartao(numeroCartao) {
     const limpo = apenasDigitos(numeroCartao);
 
@@ -49,6 +58,7 @@ export function validarCartao(numeroCartao) {
 
         if (dobrar) {
             digito *= 2;
+
             if (digito > 9) digito -= 9;
         }
 
@@ -59,7 +69,9 @@ export function validarCartao(numeroCartao) {
     return soma % 10 === 0;
 }
 
-/** Retorna true quando a validade (MM/AA) já passou. */
+/**
+ * Retorna true quando a validade MM/AA já expirou.
+ */
 export function validadeEstaExpirada(validade) {
     const partes = String(validade ?? '').split('/');
 
@@ -68,10 +80,18 @@ export function validadeEstaExpirada(validade) {
     const mes = Number(partes[0]);
     const ano = Number(partes[1]);
 
-    if (!mes || !ano || mes < 1 || mes > 12) return false;
+    if (
+        !/^\d{2}$/.test(partes[0]) ||
+        !/^\d{2}$/.test(partes[1]) ||
+        mes < 1 ||
+        mes > 12
+    ) {
+        return false;
+    }
 
     const anoCompleto = 2000 + ano;
     const agora = new Date();
+
     const mesAtual = agora.getMonth() + 1;
     const anoAtual = agora.getFullYear();
 

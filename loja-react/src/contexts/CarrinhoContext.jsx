@@ -27,19 +27,24 @@ export function CarrinhoProvider({ children }) {
         );
       }
 
-      // Não adiciona se não houver estoque
+      // Não adiciona produtos sem estoque
       if (produto.estoque < 1) {
         return itensAtuais;
       }
 
-      // Adiciona o produto com quantidade inicial igual a 1
-      return [...itensAtuais, { ...produto, quantidade: 1 }];
+      // Adiciona com quantidade inicial igual a 1
+      return [
+        ...itensAtuais,
+        { ...produto, quantidade: 1 },
+      ];
     });
   }
 
-  // Altera a quantidade respeitando o estoque e o mínimo de 1
+  // Altera a quantidade respeitando estoque e mínimo de 1
   function alterarQuantidade(id, novaQuantidade) {
-    if (novaQuantidade < 1) return;
+    if (!Number.isInteger(novaQuantidade) || novaQuantidade < 1) {
+      return;
+    }
 
     setItens((itensAtuais) =>
       itensAtuais.map((item) => {
@@ -63,7 +68,7 @@ export function CarrinhoProvider({ children }) {
     );
   }
 
-  // Limpa o carrinho após uma compra aprovada
+  // Limpa o carrinho
   function limparCarrinho() {
     setItens([]);
   }

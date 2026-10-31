@@ -1,57 +1,70 @@
 import { Link } from 'react-router-dom';
+
 import { ItemCarrinho } from '../components/molecules/ItemCarrinho';
 import { ListaProdutos } from '../components/organisms/ListaProdutos';
 import { ResumoCompra } from '../components/organisms/ResumoCompra';
 import { useCarrinho } from '../hooks/useCarrinho';
 
 export function Carrinho() {
-    const { itens, quantidadeTotal, subtotal, frete, total, atualizarQuantidade, remover } = useCarrinho();
-    const vazio = itens.length === 0;
+  const {
+    itens,
+    quantidadeTotal,
+    valorTotal,
+    alterarQuantidade,
+    removerItem,
+  } = useCarrinho();
 
-    return (
-        <main className="pagina">
-            <h1>Seu carrinho</h1>
+  const vazio = itens.length === 0;
 
-            {vazio ? (
-                <section className="carrinho-vazio">
-                    <p>Seu carrinho está vazio.</p>
-                    <p className="dica">Use a lista abaixo para adicionar produtos.</p>
-                </section>
-            ) : (
-                <div className="carrinho-grade">
-                    <section className="carrinho-conteudo">
-                        <ul className="lista-itens">
-                            {itens.map((item) => (
-                                <ItemCarrinho
-                                    key={item.id}
-                                    item={item}
-                                    onAlterarQuantidade={atualizarQuantidade}
-                                    onRemover={remover}
-                                />
-                            ))}
-                        </ul>
-                    </section>
+  const subtotal = valorTotal;
+  const frete = 0;
+  const total = subtotal + frete;
 
-                    <aside className="carrinho-lateral">
-                        <ResumoCompra
-                            subtotal={subtotal}
-                            frete={frete}
-                            total={total}
-                            quantidadeTotal={quantidadeTotal}
-                        />
+  return (
+    <main className="pagina">
+      <h1>Seu carrinho</h1>
 
-                        <Link
-                            to="/pagamento"
-                            className={`botao-primario ${vazio ? 'desabilitado' : ''}`}
-                            aria-disabled={vazio}
-                        >
-                            Ir para o pagamento
-                        </Link>
-                    </aside>
-                </div>
-            )}
+      {vazio ? (
+        <section className="carrinho-vazio">
+          <p>Seu carrinho está vazio.</p>
+          <p className="dica">
+            Use a lista abaixo para adicionar produtos.
+          </p>
+        </section>
+      ) : (
+        <div className="carrinho-grade">
+          <section className="carrinho-conteudo">
+            <ul className="lista-itens">
+              {itens.map((item) => (
+                <ItemCarrinho
+                  key={item.id}
+                  item={item}
+                  onAlterarQuantidade={alterarQuantidade}
+                  onRemover={removerItem}
+                />
+              ))}
+            </ul>
+          </section>
 
-            <ListaProdutos />
-        </main>
-    );
+          <aside className="carrinho-lateral">
+            <ResumoCompra
+              subtotal={subtotal}
+              frete={frete}
+              total={total}
+              quantidadeTotal={quantidadeTotal}
+            />
+
+            <Link
+              to="/pagamento"
+              className="botao-primario"
+            >
+              Ir para o pagamento
+            </Link>
+          </aside>
+        </div>
+      )}
+
+      <ListaProdutos />
+    </main>
+  );
 }
