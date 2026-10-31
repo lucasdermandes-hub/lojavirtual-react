@@ -7,6 +7,7 @@ import { ResumoCompra } from '../components/organisms/ResumoCompra';
 
 import { useCarrinho } from '../hooks/useCarrinho';
 import { useProdutos } from '../hooks/useProdutos';
+import { calcularFrete } from '../utils/carrinho';
 
 export function Carrinho() {
     const {
@@ -26,7 +27,7 @@ export function Carrinho() {
     const vazio = itens.length === 0;
 
     const subtotal = valorTotal;
-    const frete = 0;
+    const frete = calcularFrete(subtotal);
     const total = subtotal + frete;
 
     return (

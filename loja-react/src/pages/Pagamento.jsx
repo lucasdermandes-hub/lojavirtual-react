@@ -23,11 +23,13 @@ import {
 
 import { formatarMoeda } from '../utils/moeda';
 
+import { calcularFrete } from '../utils/carrinho';
+
 export function Pagamento() {
     const { itens, quantidadeTotal, valorTotal } = useCarrinho();
 
     const subtotal = valorTotal;
-    const frete = 0;
+    const frete = calcularFrete(subtotal);
     const total = subtotal + frete;
 
     const { processando, processarPagamento } = usePagamento();

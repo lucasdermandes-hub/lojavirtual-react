@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import { useCarrinho } from '../../hooks/useCarrinho';
 import { formatarMoeda } from '../../utils/moeda';
+import { VALOR_FRETE_GRATIS } from '../../utils/carrinho';
 import { Botao } from '../atoms/Botao';
 
 export function ProdutoCard({ produto }) {
@@ -20,8 +21,16 @@ export function ProdutoCard({ produto }) {
     produto.estoque <= 0 ||
     quantidadeNoCarrinho >= produto.estoque;
 
+  // Frete grátis é liberado a partir de R$ 199 de subtotal.
+  // O selo aparece quando o produto, sozinho, já atinge esse valor.
+  const temFreteGratis = produto.preco >= VALOR_FRETE_GRATIS;
+
   return (
-    <article className="cartao-produto">
+    <article
+      className={`cartao-produto${
+        temFreteGratis ? ' cartao-produto--frete-gratis' : ''
+      }`}
+    >
       <img
         src={produto.imagem}
         alt={produto.nome}
