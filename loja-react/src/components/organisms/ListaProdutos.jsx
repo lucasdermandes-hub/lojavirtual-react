@@ -1,5 +1,6 @@
 
 import PropTypes from 'prop-types';
+
 import { ProdutoCard } from '../molecules/ProdutoCard';
 
 export function ListaProdutos({ produtos }) {

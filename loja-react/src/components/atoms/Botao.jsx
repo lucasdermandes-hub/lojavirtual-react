@@ -1,5 +1,10 @@
 import PropTypes from 'prop-types';
 
+/**
+ * Botão base da aplicação.
+ * A variante "texto" é usada em ações discretas (ex.: remover item),
+ * as demais reaproveitam as classes globais de estilo.
+ */
 export function Botao({
   children,
   onClick,
@@ -12,7 +17,9 @@ export function Botao({
   const classeVariante =
     variante === 'secundario'
       ? 'botao-secundario'
-      : 'botao-primario';
+      : variante === 'texto'
+        ? ''
+        : 'botao-primario';
 
   return (
     <button
@@ -31,7 +38,7 @@ Botao.propTypes = {
   children: PropTypes.node.isRequired,
   onClick: PropTypes.func,
   tipo: PropTypes.oneOf(['button', 'submit', 'reset']),
-  variante: PropTypes.oneOf(['primario', 'secundario']),
+  variante: PropTypes.oneOf(['primario', 'secundario', 'texto']),
   desabilitado: PropTypes.bool,
   className: PropTypes.string,
 };

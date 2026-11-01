@@ -10,6 +10,7 @@
   --url-carrinho: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='21' r='1.4'/%3E%3Ccircle cx='20' cy='21' r='1.4'/%3E%3Cpath d='M2 3h2.6l2.5 12.1a1.9 1.9 0 0 0 1.85 1.4h9.4a1.9 1.9 0 0 0 1.8-1.3L22.5 6H5.6'/%3E%3C/svg%3E");
   --url-carrinho-branco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='21' r='1.4'/%3E%3Ccircle cx='20' cy='21' r='1.4'/%3E%3Cpath d='M2 3h2.6l2.5 12.1a1.9 1.9 0 0 0 1.85 1.4h9.4a1.9 1.9 0 0 0 1.8-1.3L22.5 6H5.6'/%3E%3C/svg%3E");
   --url-seta: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
+  --url-vitrine: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M3 9h18l-1.5-5.5A2 2 0 0 0 17.6 2H6.4a2 2 0 0 0-1.9 1.5L3 9Z'/%3E%3Cpath d='M5 9v11a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V9'/%3E%3Cpath d='M9 21v-6h6v6'/%3E%3C/svg%3E");
 
   /* ---------- Ícones do checkout ---------- */
   --url-icone-cartao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='5' width='20' height='14' rx='3'/%3E%3Cpath d='M2 10h20'/%3E%3Cpath d='M6 15h3'/%3E%3C/svg%3E");
@@ -130,7 +131,22 @@
   transform: scale(1.12);
 }
 
+/* O link de produtos usa o ícone de vitrine no lugar do carrinho. */
+.link-cabecalho--produtos::before {
+  -webkit-mask: var(--url-vitrine) no-repeat center / contain;
+  mask: var(--url-vitrine) no-repeat center / contain;
+}
+
+/* Contador de itens do carrinho (Badge do Material UI).
+   O Badge é posicionado de forma absoluta pelo Material, então
+   aqui ele volta a ser um selo inline, como no design. */
 .badge {
+  display: inline-flex;
+}
+
+.navegacao .badge .MuiBadge-badge {
+  position: static;
+  transform: none;
   min-width: 24px;
   padding: 2px 8px;
   border-radius: var(--raio-cheio);
@@ -147,7 +163,10 @@
 
 /* ---------- Botão de alternância de tema ---------- */
 
-.botao-tema {
+/* O IconButton do Material já aplica paddings e cores próprias,
+   então as regras abaixo usam especificidade maior para
+   sobrepor o estilo e manter o desenho original. */
+.navegacao .botao-tema {
   position: relative;
   display: inline-grid;
   place-items: center;
@@ -164,7 +183,7 @@
     box-shadow var(--transicao-media);
 }
 
-.botao-tema:hover {
+.navegacao .botao-tema:hover {
   border-color: var(--cor-primaria);
   color: var(--cor-primaria);
   background: var(--cor-primaria-clara);
@@ -172,7 +191,7 @@
   box-shadow: 0 10px 22px -12px var(--sombra-botao);
 }
 
-.botao-tema:active {
+.navegacao .botao-tema:active {
   transform: translateY(0) scale(0.94);
 }
 
@@ -1769,6 +1788,19 @@
   font-size: 16px;
   max-width: 46ch;
   margin-inline: auto;
+}
+
+/* Motivo da recusa da transação (ex.: "tentativa de golpe") */
+.mensagem-falha-detalhe {
+  display: inline-block;
+  margin-bottom: 14px;
+  padding: 6px 16px;
+  border-radius: var(--raio-cheio);
+  background: var(--cor-erro-suave);
+  color: var(--cor-erro);
+  font-weight: 800;
+  letter-spacing: 0.04em;
+  text-transform: lowercase;
 }
 
 .marcador-sucesso,

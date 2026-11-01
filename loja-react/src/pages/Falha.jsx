@@ -10,11 +10,14 @@ export function Falha() {
 
             <h1>Não foi possível aprovar a transação</h1>
 
+            <p className="mensagem-falha-detalhe">
+                tentativa de golpe
+            </p>
+
             <p>
                 Os dados informados não permitiram concluir o pagamento.
                 Verifique as informações e tente novamente.
             </p>
-
             <div className="acoes">
                 <Link to="/pagamento" className="botao-primario">
                     Tentar novamente

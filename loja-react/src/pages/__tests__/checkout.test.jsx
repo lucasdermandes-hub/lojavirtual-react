@@ -107,5 +107,8 @@ describe('checkout', () => {
             () => expect(screen.getByText(/Não foi possível aprovar a transação/)).toBeTruthy(),
             { timeout: 6000 }
         );
+
+        // A tela de falha exibe a mensagem exata "tentativa de golpe".
+        expect(screen.getByText('tentativa de golpe')).toBeTruthy();
     }, 20000);
 });

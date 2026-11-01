@@ -37,7 +37,7 @@ describe('página do carrinho', () => {
         const cartao = (await screen.findByText('Teclado Gamer sem fio')).closest('li');
         await usuario.click(within(cartao).getByRole('button', { name: /Adicionar/ }));
 
-        await waitFor(() => expect(container.querySelectorAll('.item-carrinho')).toHaveLength(1));
+        await waitFor(() => expect(container.querySelectorAll('[data-testid="item-carrinho"]')).toHaveLength(1));
 
         expect(screen.getAllByText('1').length).toBeGreaterThan(0);
         expect(screen.getAllByText(/R\$\s?170,00/).length).toBeGreaterThan(0);
@@ -50,7 +50,7 @@ describe('página do carrinho', () => {
         const cartao = (await screen.findByText('Teclado Gamer sem fio')).closest('li');
         await usuario.click(within(cartao).getByRole('button', { name: /Adicionar/ }));
 
-        await waitFor(() => expect(container.querySelectorAll('.item-carrinho')).toHaveLength(1));
+        await waitFor(() => expect(container.querySelectorAll('[data-testid="item-carrinho"]')).toHaveLength(1));
 
         await usuario.click(screen.getByRole('button', { name: /Aumentar quantidade/ }));
 
@@ -65,11 +65,11 @@ describe('página do carrinho', () => {
         const cartao = (await screen.findByText('Teclado Gamer sem fio')).closest('li');
         await usuario.click(within(cartao).getByRole('button', { name: /Adicionar/ }));
 
-        await waitFor(() => expect(container.querySelectorAll('.item-carrinho')).toHaveLength(1));
+        await waitFor(() => expect(container.querySelectorAll('[data-testid="item-carrinho"]')).toHaveLength(1));
 
         await usuario.click(screen.getByRole('button', { name: 'Remover' }));
 
-        await waitFor(() => expect(container.querySelectorAll('.item-carrinho')).toHaveLength(0));
+        await waitFor(() => expect(container.querySelectorAll('[data-testid="item-carrinho"]')).toHaveLength(0));
         expect(screen.getByText('Seu carrinho está vazio.')).toBeTruthy();
     });
 });

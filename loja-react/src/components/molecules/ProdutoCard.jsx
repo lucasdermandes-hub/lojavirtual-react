@@ -1,10 +1,11 @@
 
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
+
 import { useCarrinho } from '../../hooks/useCarrinho';
-import { formatarMoeda } from '../../utils/moeda';
 import { VALOR_FRETE_GRATIS } from '../../utils/carrinho';
-import { Botao } from '../atoms/Botao';
+
+import { Preco } from '../atoms/Preco';
 
 export function ProdutoCard({ produto }) {
   const { adicionarItem, itens } = useCarrinho();
@@ -44,9 +45,7 @@ export function ProdutoCard({ produto }) {
 
         <h3>{produto.nome}</h3>
 
-        <p className="preco">
-          {formatarMoeda(produto.preco)}
-        </p>
+        <Preco valor={produto.preco} />
 
         <small>
           {produto.estoque > 0
@@ -62,15 +61,14 @@ export function ProdutoCard({ produto }) {
         </Link>
       </div>
 
-      <Botao
+      <button
+        type="button"
         className="botao-adicionar"
-        desabilitado={semEstoque}
+        disabled={semEstoque}
         onClick={() => adicionarItem(produto)}
       >
-        {semEstoque
-          ? 'Sem estoque'
-          : 'Adicionar ao carrinho'}
-      </Botao>
+        {semEstoque ? 'Sem estoque' : 'Adicionar ao carrinho'}
+      </button>
     </article>
   );
 }

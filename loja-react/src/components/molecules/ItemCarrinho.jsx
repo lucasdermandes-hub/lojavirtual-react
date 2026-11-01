@@ -1,11 +1,15 @@
 
+import PropTypes from 'prop-types';
+
 import { formatarMoeda } from '../../utils/moeda';
+
+import { Botao } from '../atoms/Botao';
 
 export function ItemCarrinho({ item, onAlterarQuantidade, onRemover }) {
     const subtotal = item.preco * item.quantidade;
 
     return (
-        <li className="item-carrinho">
+        <li className="item-carrinho" data-testid="item-carrinho">
             <img
                 className="item-imagem"
                 src={item.imagem}
@@ -53,13 +57,13 @@ export function ItemCarrinho({ item, onAlterarQuantidade, onRemover }) {
                         </button>
                     </div>
 
-                    <button
-                        type="button"
+                    <Botao
+                        variante="texto"
                         className="botao-remover"
                         onClick={() => onRemover(item.id)}
                     >
                         Remover
-                    </button>
+                    </Botao>
                 </div>
             </div>
 
@@ -69,3 +73,17 @@ export function ItemCarrinho({ item, onAlterarQuantidade, onRemover }) {
         </li>
     );
 }
+
+ItemCarrinho.propTypes = {
+    item: PropTypes.shape({
+        id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]).isRequired,
+        nome: PropTypes.string.isRequired,
+        preco: PropTypes.number.isRequired,
+        imagem: PropTypes.string.isRequired,
+        estoque: PropTypes.number.isRequired,
+        categoria: PropTypes.string,
+        quantidade: PropTypes.number.isRequired,
+    }).isRequired,
+    onAlterarQuantidade: PropTypes.func.isRequired,
+    onRemover: PropTypes.func.isRequired,
+};
