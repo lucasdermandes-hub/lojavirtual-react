@@ -1,112 +1,119 @@
 
-import { createContext, useState, useMemo } from 'react';
+import { createContext, useEffect, useMemo, useReducer } from 'react';
 import PropTypes from 'prop-types';
+
+import { acoesCarrinho, carrinhoReducer } from '../utils/carrinho';
 
 export const CarrinhoContext = createContext();
 
+const CHAVE_ARMAZENAMENTO = 'loja-react:carrinho';
+
+/** Lê o carrinho salvo no navegador. */
+function carregarCarrinho() {
+    try {
+        const dados = window.localStorage.getItem(CHAVE_ARMAZENAMENTO);
+
+        if (!dados) return [];
+
+        const itens = JSON.parse(dados);
+
+        return Array.isArray(itens) ? itens : [];
+    } catch {
+        // Armazenamento indisponível ou dados corrompidos.
+        return [];
+    }
+}
+
 export function CarrinhoProvider({ children }) {
-  const [itens, setItens] = useState([]);
+    const [itens, dispatch] = useReducer(
+        carrinhoReducer,
+        undefined,
+        carregarCarrinho
+    );
 
-  // Adiciona um produto ao carrinho
-  function adicionarItem(produto) {
-    setItens((itensAtuais) => {
-      const itemExistente = itensAtuais.find(
-        (item) => item.id === produto.id
-      );
+    // Mantém o carrinho salvo ao recarregar a página.
+    useEffect(() => {
+        try {
+            window.localStorage.setItem(
+                CHAVE_ARMAZENAMENTO,
+                JSON.stringify(itens)
+            );
+        } catch {
+            // Modo privado ou cota cheia: segue sem persistir.
+        }
+    }, [itens]);
 
-      if (itemExistente) {
-        // Impede que a quantidade ultrapasse o estoque
-        if (itemExistente.quantidade >= produto.estoque) {
-          return itensAtuais;
+    // Adiciona um produto ao carrinho
+    function adicionarItem(produto) {
+        // Não adiciona produtos sem estoque
+        if (produto.estoque < 1) {
+            return;
         }
 
-        return itensAtuais.map((item) =>
-          item.id === produto.id
-            ? { ...item, quantidade: item.quantidade + 1 }
-            : item
-        );
-      }
-
-      // Não adiciona produtos sem estoque
-      if (produto.estoque < 1) {
-        return itensAtuais;
-      }
-
-      // Adiciona com quantidade inicial igual a 1
-      return [
-        ...itensAtuais,
-        { ...produto, quantidade: 1 },
-      ];
-    });
-  }
-
-  // Altera a quantidade respeitando estoque e mínimo de 1
-  function alterarQuantidade(id, novaQuantidade) {
-    if (!Number.isInteger(novaQuantidade) || novaQuantidade < 1) {
-      return;
+        dispatch({
+            type: acoesCarrinho.ADICIONAR,
+            payload: { produto },
+        });
     }
 
-    setItens((itensAtuais) =>
-      itensAtuais.map((item) => {
-        if (item.id === id) {
-          if (novaQuantidade > item.estoque) {
-            return item;
-          }
-
-          return { ...item, quantidade: novaQuantidade };
+    // Altera a quantidade respeitando estoque e mínimo de 1
+    function alterarQuantidade(id, novaQuantidade) {
+        if (!Number.isInteger(novaQuantidade) || novaQuantidade < 0) {
+            return;
         }
 
-        return item;
-      })
+        dispatch({
+            type: acoesCarrinho.ATUALIZAR_QUANTIDADE,
+            payload: { id, quantidade: novaQuantidade },
+        });
+    }
+
+    // Remove um produto do carrinho
+    function removerItem(id) {
+        dispatch({
+            type: acoesCarrinho.REMOVER,
+            payload: { id },
+        });
+    }
+
+    // Limpa o carrinho
+    function limparCarrinho() {
+        dispatch({ type: acoesCarrinho.LIMPAR });
+    }
+
+    // Calcula a quantidade total de unidades
+    const quantidadeTotal = useMemo(() => {
+        return itens.reduce(
+            (acumulador, item) => acumulador + item.quantidade,
+            0
+        );
+    }, [itens]);
+
+    // Calcula o valor total da compra
+    const valorTotal = useMemo(() => {
+        return itens.reduce(
+            (acumulador, item) => acumulador + item.preco * item.quantidade,
+            0
+        );
+    }, [itens]);
+
+    const valor = {
+        itens,
+        adicionarItem,
+        alterarQuantidade,
+        removerItem,
+        limparCarrinho,
+        quantidadeTotal,
+        valorTotal,
+    };
+
+    return (
+        <CarrinhoContext.Provider value={valor}>
+            {children}
+        </CarrinhoContext.Provider>
     );
-  }
-
-  // Remove um produto do carrinho
-  function removerItem(id) {
-    setItens((itensAtuais) =>
-      itensAtuais.filter((item) => item.id !== id)
-    );
-  }
-
-  // Limpa o carrinho
-  function limparCarrinho() {
-    setItens([]);
-  }
-
-  // Calcula a quantidade total de unidades
-  const quantidadeTotal = useMemo(() => {
-    return itens.reduce(
-      (acumulador, item) => acumulador + item.quantidade,
-      0
-    );
-  }, [itens]);
-
-  // Calcula o valor total da compra
-  const valorTotal = useMemo(() => {
-    return itens.reduce(
-      (acumulador, item) =>
-        acumulador + item.preco * item.quantidade,
-      0
-    );
-  }, [itens]);
-
-  const valor = {
-    itens,
-    adicionarItem,
-    alterarQuantidade,
-    removerItem,
-    limparCarrinho,
-    quantidadeTotal,
-    valorTotal,
-  };
-
-  return (
-    <CarrinhoContext.Provider value={valor}>
-      {children}
-    </CarrinhoContext.Provider>
-  );
 }
 
 CarrinhoProvider.propTypes = {
-  children: PropTypes.node.isRequired,
+    children: PropTypes.node.isRequired,
 };

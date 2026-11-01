@@ -10,6 +10,13 @@
   --url-carrinho: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='21' r='1.4'/%3E%3Ccircle cx='20' cy='21' r='1.4'/%3E%3Cpath d='M2 3h2.6l2.5 12.1a1.9 1.9 0 0 0 1.85 1.4h9.4a1.9 1.9 0 0 0 1.8-1.3L22.5 6H5.6'/%3E%3C/svg%3E");
   --url-carrinho-branco: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='9' cy='21' r='1.4'/%3E%3Ccircle cx='20' cy='21' r='1.4'/%3E%3Cpath d='M2 3h2.6l2.5 12.1a1.9 1.9 0 0 0 1.85 1.4h9.4a1.9 1.9 0 0 0 1.8-1.3L22.5 6H5.6'/%3E%3C/svg%3E");
   --url-seta: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 12h14'/%3E%3Cpath d='m12 5 7 7-7 7'/%3E%3C/svg%3E");
+
+  /* ---------- Ícones do checkout ---------- */
+  --url-icone-cartao: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='2' y='5' width='20' height='14' rx='3'/%3E%3Cpath d='M2 10h20'/%3E%3Cpath d='M6 15h3'/%3E%3C/svg%3E");
+  --url-icone-pix: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m12 3 9 6-9 12-9-12 9-6Z'/%3E%3Cpath d='m3 9 9 6 9-6'/%3E%3Cpath d='m7.5 5.4 4.5 3.2 4.5-3.2'/%3E%3C/svg%3E");
+  --url-icone-boleto: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h16v4a2 2 0 0 0 0 4v4a2 2 0 0 0 0 4v4H4v-4a2 2 0 0 0 0-4V8a2 2 0 0 0 0-4V4Z'/%3E%3Cpath d='M9 8h6M9 12h6M9 16h4'/%3E%3C/svg%3E");
+  --url-icone-cadeado: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='4' y='10' width='16' height='11' rx='2'/%3E%3Cpath d='M8 10V7a4 4 0 0 1 8 0v3'/%3E%3C/svg%3E");
+  --url-icone-check: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='3.4' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m5 12.5 4.5 4.5L19 7'/%3E%3C/svg%3E");
 }
 
 [data-theme='escuro'],
@@ -1376,12 +1383,51 @@
   box-shadow: var(--sombra);
 }
 
+/* O <legend> nativo é desenhado sobre a borda do fieldset: ele abre um
+   "entalhe" no topo do card e ainda desalinha o texto em relação ao
+   conteúdo. Flutuando, o legend vira um cabeçalho comum dentro do card
+   e a borda volta a ser um retângulo completo com cantos arredondados. */
 .grupo legend {
-  padding: 0 12px;
+  float: left;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 0;
+  margin: 0 0 20px;
   font-weight: 800;
   font-size: 16px;
   letter-spacing: -0.02em;
   color: var(--cor-texto);
+}
+
+/* Depois do legend flutuado, o conteúdo precisa voltar para baixo dele */
+.grupo > *:not(legend) {
+  clear: both;
+}
+
+/* Numeração dos blocos do checkout (1 pagamento, 2 cartão, 3 endereço) */
+.form-pagamento {
+  counter-reset: bloco;
+}
+
+.grupo {
+  counter-increment: bloco;
+}
+
+.grupo legend::before {
+  content: counter(bloco);
+  display: inline-grid;
+  place-items: center;
+  width: 26px;
+  height: 26px;
+  flex: none;
+  border-radius: 50%;
+  background: var(--cor-primaria-clara);
+  color: var(--cor-primaria);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
 }
 
 .campo {
@@ -1395,10 +1441,22 @@
   margin-bottom: 0;
 }
 
+/* Dentro das linhas o espaçamento já vem do `gap` do grid,
+   senão a margem do campo some a margem da linha e sobra um vão. */
+.linha-dupla > .campo,
+.linha-tripla > .campo {
+  margin-bottom: 0;
+}
+
+/* Campo com erro ganha folga para o próximo rótulo não colar nele */
+.campo:has(.erro) {
+  padding-bottom: 8px;
+}
+
 .campo label {
-  font-size: 13px;
+  font-size: 13.5px;
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   color: var(--cor-texto);
 }
 
@@ -1424,6 +1482,15 @@
   border-color: var(--cor-primaria);
   background-color: var(--cor-superficie);
   box-shadow: 0 0 0 4px var(--anel-foco-suave);
+}
+
+/* Campos numéricos: algarismos alinhados e um respiro entre os dígitos */
+.campo input#numeroCartao,
+.campo input#validade,
+.campo input#cvv,
+.campo input#cep {
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.06em;
 }
 
 .campo select {
@@ -1477,23 +1544,27 @@
   gap: 16px;
 }
 
+/* Grade das formas de pagamento.
+   Em telas largas cabem as 3 lado a lado; quando o espaço aperta, o
+   último método ocupa a linha inteira para o bloco não ficar torto. */
 .opcoes-pagamento {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+  grid-template-columns: repeat(3, minmax(0, 1fr));
   gap: 12px;
 }
 
 .opcao-pagamento {
+  position: relative;
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 15px 17px;
+  padding: 14px;
   border: 1px solid var(--cor-borda);
   border-radius: var(--raio-pequeno);
   background: var(--cor-superficie);
   cursor: pointer;
   font-weight: 600;
-  font-size: 14px;
+  font-size: 13.5px;
   transition: border-color var(--transicao), background var(--transicao),
     color var(--transicao), box-shadow var(--transicao), transform var(--transicao);
 }
@@ -1517,6 +1588,161 @@
   height: 17px;
   flex: none;
   cursor: pointer;
+}
+
+/* Rótulo do método: ícone + nome */
+.opcao-pagamento > span {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  flex: 1;
+  min-width: 0;
+}
+
+.opcao-pagamento > span::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask: var(--url-icone-cartao) no-repeat center / contain;
+  mask: var(--url-icone-cartao) no-repeat center / contain;
+}
+
+/* Cada método tem o seu ícone (a ordem vem do array METODOS_PAGAMENTO) */
+.opcao-pagamento:nth-child(2) > span::before {
+  -webkit-mask-image: var(--url-icone-pix);
+  mask-image: var(--url-icone-pix);
+}
+
+.opcao-pagamento:nth-child(3) > span::before {
+  -webkit-mask-image: var(--url-icone-boleto);
+  mask-image: var(--url-icone-boleto);
+}
+
+/* Selo de "escolhido" no canto direito da opção */
+.opcao-pagamento.selecionada::after {
+  content: '';
+  width: 18px;
+  height: 18px;
+  flex: none;
+  border-radius: 50%;
+  background-color: var(--cor-primaria);
+  background-image: var(--url-icone-check);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 11px 11px;
+  box-shadow: 0 4px 10px -4px var(--sombra-botao);
+}
+
+/* =========================================================
+   CHECKOUT
+   ========================================================= */
+
+/* Trilha das etapas do checkout (pílula acima do título) */
+.pagina:has(.checkout-grade)::before {
+  content: 'Carrinho  ›  Pagamento  ›  Confirmação';
+  display: inline-flex;
+  align-self: flex-start;
+  align-items: center;
+  padding: 7px 16px;
+  border: 1px solid var(--cor-borda);
+  border-radius: var(--raio-cheio);
+  background: var(--cor-superficie);
+  box-shadow: var(--sombra-xs);
+  color: var(--cor-texto-suave);
+  font-size: 12.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  white-space: nowrap;
+}
+
+/* Subtítulo do título da página */
+.pagina:has(.checkout-grade) > h1::after {
+  content: 'Escolha como pagar, informe o endereço de entrega e conclua o pedido em poucos passos.';
+  display: block;
+  max-width: 62ch;
+  margin-top: 12px;
+  font-size: 15.5px;
+  font-weight: 400;
+  line-height: 1.6;
+  letter-spacing: 0;
+  color: var(--cor-texto-suave);
+}
+
+/* Botão de pagar com cadeado e aviso de ambiente seguro */
+.form-pagamento > .botao-primario {
+  padding: 16px 28px;
+  font-size: 16px;
+  letter-spacing: -0.01em;
+}
+
+.form-pagamento > .botao-primario::before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  flex: none;
+  background-color: currentColor;
+  -webkit-mask: var(--url-icone-cadeado) no-repeat center / contain;
+  mask: var(--url-icone-cadeado) no-repeat center / contain;
+}
+
+.form-pagamento::after {
+  content: 'Ambiente seguro · seus dados são criptografados';
+  display: block;
+  margin-top: -12px;
+  text-align: center;
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--cor-texto-suave);
+}
+
+/* Lista de itens do pedido, na coluna lateral */
+.checkout-lateral .checkout-itens::before {
+  content: 'Itens do pedido';
+  display: block;
+  margin-bottom: 14px;
+  font-size: 11.5px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--cor-texto-suave);
+}
+
+.checkout-lateral .checkout-itens li {
+  align-items: center;
+  padding-top: 10px;
+  border-top: 1px dashed var(--cor-borda);
+  transition: color var(--transicao);
+}
+
+.checkout-lateral .checkout-itens li:first-of-type {
+  padding-top: 0;
+  border-top: none;
+}
+
+.checkout-lateral .checkout-itens li:hover {
+  color: var(--cor-texto);
+}
+
+/* Selo de frete grátis liberado */
+.aviso-frete--liberado {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.aviso-frete--liberado::before {
+  content: '';
+  width: 20px;
+  height: 20px;
+  flex: none;
+  border-radius: 50%;
+  background-color: var(--cor-sucesso);
+  background-image: var(--url-icone-check);
+  background-repeat: no-repeat;
+  background-position: center;
+  background-size: 12px 12px;
 }
 
 /* =========================================================
@@ -1664,6 +1890,28 @@
 /* =========================================================
    RESPONSIVO
    ========================================================= */
+
+/* Formas de pagamento: 2 colunas e o último método na linha inteira */
+@media (max-width: 1180px) {
+  .opcoes-pagamento {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .opcoes-pagamento > :last-child {
+    grid-column: 1 / -1;
+  }
+}
+
+/* No celular cada método fica em uma linha só */
+@media (max-width: 600px) {
+  .opcoes-pagamento {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .opcoes-pagamento > :last-child {
+    grid-column: auto;
+  }
+}
 
 @media (max-width: 1100px) {
   .carrinho-grade,
