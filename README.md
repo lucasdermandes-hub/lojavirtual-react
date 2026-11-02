@@ -183,11 +183,11 @@ React.
 
 ## Links
 
-- Link da Loja Virtual: 
+- Link da Loja Virtual: https://lojavirtual-react.netlify.app
 
 - Link do Trello: https://trello.com/invite/b/6aceaf873f5f6efa98c03ce6/ATTI8d1cada2bf728679bf4b361933b440ed574CCDCC/loja-react-projeto-final-m2
 
-- Link do vídeo:
+- Link do vídeo: https://drive.google.com/file/d/1JVxX-0cIxRIGGXrlk3zLrCb-O3FznTcE/view?usp=sharing
 
 - Link do Repositório: https://github.com/lucasdermandes-hub/lojavirtual-react.git
 
