@@ -1,0 +1,29 @@
+# Configuração do deploy no Netlify para quando a "Base directory" do site
+# estiver apontando para a raiz do repositório.
+#
+# O código-fonte da aplicação vive na subpasta "loja-react", então o build
+# roda com base = "loja-react" e publica a pasta "dist" gerada pelo Vite.
+#
+# (Se a Base directory no painel do Netlify já estiver como "loja-react",
+#  o arquivo loja-react/netlify.toml é o que vale e este aqui é ignorado.)
+
+[build]
+  base = "loja-react"
+  command = "npm run build"
+  publish = "dist"
+
+[build.environment]
+  NODE_VERSION = "22"
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+# Fallback de SPA: o React Router (BrowserRouter) resolve as rotas
+# (/produtos, /carrinho, /pagamento, /produtos/:id...) no cliente.
+# Sem isso, qualquer URL direta ou F5 devolve o 404 do Netlify.
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200

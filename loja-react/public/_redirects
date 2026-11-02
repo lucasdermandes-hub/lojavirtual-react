@@ -1,0 +1,4 @@
+# Fallback de SPA (React Router / BrowserRouter).
+# Todas as rotas são devolvidas como index.html para o roteador resolver no cliente.
+# Arquivos estáticos existentes (ex.: /assets/*) continuam sendo servidos normalmente.
+/*    /index.html   200
