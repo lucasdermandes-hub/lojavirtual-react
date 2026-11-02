@@ -1,150 +1,195 @@
-<div align="center">
-
-<img src="loja-react/public/logo-brivio.png" alt="Brivio" width="220" />
-
 # Brivio — Loja Virtual
 
-E-commerce de exemplo em **React 19**: catálogo com busca, detalhe do produto, carrinho de
-compras e checkout (cartão, Pix e boleto).
+**Sua loja, do seu jeito.**
 
-</div>
-
----
-
-## Links da entrega
-
-| Item | Link |
-| --- | --- |
-| Aplicação publicada | _preencher com o link da Netlify_ |
-| Quadro de tarefas (Trello) | _preencher com o link do board_ |
-| Vídeo de apresentação (Google Drive) | _preencher com o link do vídeo_ |
-| Repositório | https://github.com/lucasdermandes-hub/lojavirtual-react |
-
-## O problema que resolve
-
-Lojas de exemplo costumam perder o carrinho ao recarregar a página, espalhar validação de
-formulário pelos componentes e esconder as regras de negócio dentro do JSX.
-
-Aqui o carrinho fica num `useReducer` com persistência em `localStorage`, o checkout é
-validado por **schema do Zod** (nada de `if` manual) e as regras de negócio moram em
-funções puras em `src/utils/` — testáveis sem DOM.
+A Brivio é uma loja virtual desenvolvida com React e Vite como projeto
+avaliativo. A aplicação apresenta um catálogo de produtos, busca,
+detalhes dos produtos, carrinho de compras e fluxo de pagamento
+simulado.
 
 ## Tecnologias
 
-- **React 19** + **React Router 7** (rotas, layout e rota protegida do checkout)
-- **Vite 8** (build e dev server) + **Vitest 5** e **Testing Library** (36 testes)
-- **Zod 4** + **React Hook Form** (validação do checkout)
-- **Material UI 9** (`Badge`, `IconButton`, `Tooltip`) + CSS autoral com *design tokens*
-  e tema claro/escuro
-- **JavaScript (ESM)**, **JSX** e **CSS3** em `globais.css` + `componentes.css`
-- **json-server** como API simulada do catálogo (`db.json`)
+- **React** — construção da interface por componentes.
+- **Vite** — ambiente de desenvolvimento e build.
+- **JavaScript** — lógica da aplicação.
+- **React Router DOM** — navegação entre páginas.
+- **JSON Server** — API REST simulada para os produtos.
+- **React Hook Form e Zod** — gerenciamento e validação do
+formulário de pagamento.
+- **CSS** — estilização e responsividade.
+
+## Funcionalidades
+
+- Catálogo de produtos carregado por meio de uma API simulada.
+- Busca de produtos pelo nome.
+- Exibição de informações e detalhes dos produtos.
+- Carrinho com inclusão, alteração de quantidade e remoção de itens.
+- Verificação de disponibilidade conforme o estoque.
+- Cálculo do subtotal e do total da compra.
+- Formulário de pagamento com validação.
+- Simulação de aprovação ou falha no pagamento.
+- Páginas de sucesso e falha da compra.
+- Layout organizado em componentes reutilizáveis.
+
+> **Observação:** o pagamento é simulado para fins didáticos. A
+aplicação não processa transações financeiras reais.
+> 
+
+## Requisitos
+
+Antes de executar o projeto, instale:
+
+- Node.js (versão LTS recomendada).
+- npm, que é instalado junto com o Node.js.
 
 ## Como executar
 
-```bash
-git clone https://github.com/lucasdermandes-hub/lojavirtual-react.git
-cd lojavirtual-react/loja-react
-npm install
+1. Clone o repositório ou abra a pasta do projeto no computador.
+2. Abra o terminal na pasta raiz do projeto.
+3. Instale as dependências:
+    
+    ```bash
+    npm install
+    ```
+    
+4. Inicie a API simulada em um terminal:
+    
+    ```bash
+    npm run api
+    ```
+    
+5. Em outro terminal, na pasta do projeto, inicie a aplicação:
+    
+    ```bash
+    npm run dev
+    ```
+    
+6. Acesse no navegador o endereço local informado pelo Vite no
+terminal, normalmente `http://localhost:5173`.
+
+**Importante:** mantenha a API e o servidor do Vite em execução enquanto
+estiver utilizando a aplicação. O comando `npm run api` deve estar
+configurado no `package.json` para iniciar o JSON Server com o arquivo
+`db.json`.
+
+## Estrutura do projeto
+
+A organização pode ser consultada na pasta `src`. Os principais
+diretórios são:
+
+```
+src/
+├── components/
+│   ├── atoms/
+│   ├── molecules/
+│   ├── organisms/
+│   └── templates/
+├── contexts/
+├── hooks/
+├── pages/
+├── routes/
+├── services/
+├── utils/
+├── App.jsx
+└── main.jsx
+
+public/
+└── logo-brivio.png
+
+db.json
+index.html
+package.json
 ```
 
-Dois terminais — em desenvolvimento a API é usada para servir o catálogo:
+### Organização dos componentes
 
-```bash
-npm run api   # terminal 1 — API de produtos em http://localhost:3001
-npm run dev   # terminal 2 — aplicação em http://localhost:5173
-```
+- **atoms:** componentes básicos de interface, como botões e campos.
+- **molecules:** combinações de componentes menores, como o cartão de
+produto e o item do carrinho.
+- **organisms:** seções maiores, como cabeçalho e listagem de
+produtos.
+- **templates:** estruturas compartilhadas entre páginas.
+- **contexts:** estados compartilhados da aplicação, como o carrinho e
+o tema.
+- **hooks:** lógica reutilizável da aplicação.
+- **pages:** páginas acessadas pelas rotas.
+- **routes:** componentes relacionados à proteção e ao controle de
+rotas.
+- **services:** comunicação com a API.
+- **utils:** funções auxiliares, como formatação de moeda e filtragem.
 
-| Script | O que faz |
+## API simulada
+
+Os dados dos produtos ficam no arquivo `db.json` e são disponibilizados
+pelo JSON Server.
+
+Endpoints utilizados:
+
+| Método | Endpoint | Descrição |
+| --- | --- | --- |
+| GET | `/produtos` | Retorna a lista de produtos. |
+| GET | `/produtos/:id` | Retorna um produto pelo identificador. |
+
+A API deve estar disponível localmente na porta configurada no projeto
+(por exemplo, `http://localhost:3001`).
+
+## Identidade visual
+
+A marca utilizada é **Brivio — Sua loja, do seu jeito.** A imagem da
+logo fica na pasta `public`, com o nome `logo-brivio.png`, e pode ser
+utilizada no cabeçalho e como ícone da guia do navegador.
+
+## Scripts
+
+Os comandos disponíveis dependem das configurações do `package.json`. No
+fluxo de desenvolvimento descrito neste documento:
+
+| Comando | Finalidade |
 | --- | --- |
-| `npm run dev` | Servidor de desenvolvimento com hot reload |
-| `npm run api` | Sobe o `json-server` com o `db.json` |
-| `npm run build` | Build de produção em `dist/` |
-| `npm run preview` | Serve o build localmente |
-| `npm run lint` | ESLint |
-| `npm test` | Testes (Vitest) — roda sem a API no ar |
+| `npm install` | Instala as dependências do projeto. |
+| `npm run api` | Inicia a API simulada com JSON Server. |
+| `npm run dev` | Inicia o servidor de desenvolvimento do Vite. |
+| `npm run build` | Gera a versão de produção. |
 
-### Variáveis de ambiente
+## Build de produção
 
-| Variável | Uso |
-| --- | --- |
-| `VITE_API_URL` | Endereço da API simulada (padrão `http://localhost:3001`) |
-| `VITE_USO_DADOS_LOCAIS` | `true` lê o catálogo direto do `db.json`; `false` usa a API |
-
-Em desenvolvimento o `.env` deixa `VITE_USO_DADOS_LOCAIS=false` (usa o json-server).
-Na versão publicada o `.env.production` deixa `true`, porque na Netlify não existe
-json-server — assim o `db.json` é importado pelo bundle e o catálogo continua carregando.
-
-## Como está organizado
-
-```
-loja-react/
-├── db.json               # 12 produtos da API simulada
-├── netlify.toml          # build + rewrite de SPA
-├── src/
-│   ├── components/       # Atomic Design: atoms → molecules → organisms → templates
-│   │   ├── atoms/        # Botao · Preco · Campo · CampoBusca
-│   │   ├── molecules/    # ProdutoCard · ItemCarrinho
-│   │   ├── organisms/    # Header · ListaProdutos · ResumoCompra
-│   │   └── templates/    # Layout (Header + Outlet + Footer)
-│   ├── pages/            # Produtos · DetalheProduto · Carrinho · Pagamento · Sucesso · Falha · 404
-│   ├── contexts/         # CarrinhoContext (useReducer) · TemaContext
-│   ├── hooks/            # useCarrinho · useProdutos · usePagamento · useTema
-│   ├── routes/           # RotaPrivada
-│   ├── services/         # api.js (fetch → json-server, com fallback para o db.json)
-│   ├── utils/            # funções puras: carrinho · pagamento · esquemaPagamento · moeda · busca
-│   ├── test/             # setup.js (mock do fetch para os testes de página)
-│   └── assets/estilos/   # globais.css (tokens e reset) + componentes.css (todos os componentes)
-```
-
-Todo o CSS vive em dois arquivos dentro de `src/assets/estilos/`:
-
-- **`globais.css`** — tokens de design (cores, tipografia, espaçamentos, sombras),
-  reset e as bases do tema claro/escuro;
-- **`componentes.css`** — o estilo de cada parte da interface (cabeçalho, vitrine,
-  card de produto, carrinho, checkout e telas de resultado), com as media queries
-  de responsividade no fim do arquivo.
-
-## Material UI
-
-Além do CSS autoral, a interface usa componentes do **Material UI** onde eles
-encaixam bem:
-
-- `Badge` — contador de itens no carrinho (no Header);
-- `IconButton` + `Tooltip` — botão de alternância do tema claro/escuro.
-
-O tema é controlado por tokens CSS (`data-tema` no `<html>`), então os componentes
-do MUI são estilizados pelo `componentes.css` com as mesmas variáveis do design.
-
-## Regras principais
-
-- Frete grátis a partir de **R$ 199,00** de subtotal; abaixo disso, **R$ 19,90**.
-- A quantidade nunca passa do **estoque** do produto.
-- Cartão: **16 dígitos**, **Luhn**, validade `MM/AA` não vencida e **CVV** de 3 dígitos.
-- **Antifraude**: cartão com dígitos repetidos (`1111 1111 1111 1111`) passa no formulário
-  mas é bloqueado na aprovação e cai na tela de falha com a mensagem
-  **"tentativa de golpe"**.
-
-Para aprovar um pagamento, use o cartão `4539 5787 6362 1486`.
-
-## Testes
+Para gerar os arquivos otimizados:
 
 ```bash
-npm test
+npm run build
 ```
 
-36 testes cobrindo as funções de regra de negócio (`formatarMoeda`, `carrinhoReducer`,
-`calcularFrete`, máscaras e validação de cartão, `validarCartao`, `verificarDigitosIguais`,
-`validadeEstaExpirada`) e os fluxos de página (produtos/busca, carrinho e checkout).
-Os testes de página usam um mock do `fetch` (`src/test/setup.js`), então rodam sem o
-`json-server` ligado.
+O resultado será gerado na pasta `dist`. Para conferir localmente a
+versão de produção, utilize:
 
-## Melhorias possíveis
+```bash
+npm run preview
+```
 
-- Carrinho lateral (drawer), filtros por categoria e faixa de preço na vitrine.
-- Busca sincronizada com a query string (`/produtos?busca=tenis`) e `useDebounce`.
-- Autenticação, histórico de pedidos, cupons de desconto e cálculo de impostos.
-- Testes de acessibilidade com `axe-core` e CI no GitHub Actions.
+## Observações
 
-## Autor
+- Os produtos dependem da API simulada estar em execução.
+- Os dados e o comportamento do pagamento são destinados à
+demonstração acadêmica.
+- Ajuste a URL e a porta da API em `src/services/api.jsx` caso a
+configuração local seja diferente.
+- Consulte o `package.json` para confirmar os scripts e as versões das
+dependências instaladas.
 
-Lucas Dermandes — [@lucasdermandes-hub](https://github.com/lucasdermandes-hub) · licença MIT.
+## Autoria
+
+Projeto acadêmico desenvolvido como aplicação de loja virtual utilizando
+React.
+
+## Links
+
+- Link da Loja Virtual: 
+
+- Link do Trello: https://trello.com/invite/b/6aceaf873f5f6efa98c03ce6/ATTI8d1cada2bf728679bf4b361933b440ed574CCDCC/loja-react-projeto-final-m2
+
+- Link do vídeo:
+
+- Link do Repositório: https://github.com/lucasdermandes-hub/lojavirtual-react.git
+
+
+**Brivio — Sua loja, do seu jeito.**
