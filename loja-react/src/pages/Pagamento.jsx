@@ -138,14 +138,13 @@ export function Pagamento() {
                                     inputMode="numeric"
                                     placeholder="1234 5678 9034 2313"
                                     autoComplete="cc-number"
-                                    {...register('numeroCartao', {
-                                        onChange: (evento) => {
-                                            evento.target.value =
-                                                formatarNumeroCartao(
-                                                    evento.target.value
-                                                );
-                                        },
-                                    })}
+                                    {...register('numeroCartao')}
+                                    onInput={(evento) => {
+                                        evento.target.value =
+                                            formatarNumeroCartao(
+                                                evento.target.value
+                                            );
+                                    }}
                                 />
                             </Campo>
 
@@ -161,14 +160,13 @@ export function Pagamento() {
                                         inputMode="numeric"
                                         placeholder="12/28"
                                         autoComplete="cc-exp"
-                                        {...register('validade', {
-                                            onChange: (evento) => {
-                                                evento.target.value =
-                                                    formatarValidade(
-                                                        evento.target.value
-                                                    );
-                                            },
-                                        })}
+                                        {...register('validade')}
+                                        onInput={(evento) => {
+                                            evento.target.value =
+                                                formatarValidade(
+                                                    evento.target.value
+                                                );
+                                        }}
                                     />
                                 </Campo>
 
@@ -183,14 +181,12 @@ export function Pagamento() {
                                         inputMode="numeric"
                                         placeholder="123"
                                         autoComplete="cc-csc"
-                                        {...register('cvv', {
-                                            onChange: (evento) => {
-                                                evento.target.value =
-                                                    formatarCvv(
-                                                        evento.target.value
-                                                    );
-                                            },
-                                        })}
+                                        {...register('cvv')}
+                                        onInput={(evento) => {
+                                            evento.target.value = formatarCvv(
+                                                evento.target.value
+                                            );
+                                        }}
                                     />
                                 </Campo>
 
@@ -238,13 +234,12 @@ export function Pagamento() {
                                     inputMode="numeric"
                                     placeholder="00000-000"
                                     autoComplete="postal-code"
-                                    {...register('cep', {
-                                        onChange: (evento) => {
-                                            evento.target.value = formatarCep(
-                                                evento.target.value
-                                            );
-                                        },
-                                    })}
+                                    {...register('cep')}
+                                    onInput={(evento) => {
+                                        evento.target.value = formatarCep(
+                                            evento.target.value
+                                        );
+                                    }}
                                 />
                             </Campo>
 
@@ -259,12 +254,11 @@ export function Pagamento() {
                                     maxLength={2}
                                     placeholder="SC"
                                     autoComplete="address-level1"
-                                    {...register('uf', {
-                                        onChange: (evento) => {
-                                            evento.target.value =
-                                                evento.target.value.toUpperCase();
-                                        },
-                                    })}
+                                    {...register('uf')}
+                                    onInput={(evento) => {
+                                        evento.target.value =
+                                            evento.target.value.toUpperCase();
+                                    }}
                                 />
                             </Campo>
                         </div>

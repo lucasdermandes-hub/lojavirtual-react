@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { startTransition, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCarrinho } from './useCarrinho';
 import { verificarDigitosIguais } from '../utils/pagamento';
@@ -49,8 +49,18 @@ export function usePagamento() {
             })),
         };
 
-        limparCarrinho();
+        // A navegação precisa acontecer antes de esvaziar o carrinho.
+        // O <RotaPrivada> redireciona para /carrinho assim que o
+        // carrinho fica vazio, e como o React Router aplica a navegação
+        // em uma transição, esse redirecionamento chegaria antes e a
+        // compra cairia em /carrinho em vez de /sucesso.
         navigate('/sucesso', { state: pedido });
+
+        // Esvaziar o carrinho dentro da mesma transição mantém a ordem:
+        // a rota muda para /sucesso e só então o carrinho fica vazio.
+        startTransition(() => {
+            limparCarrinho();
+        });
     };
 
     return { processando, processarPagamento };

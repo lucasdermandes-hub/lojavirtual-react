@@ -1,5 +1,11 @@
 
-import { createContext, useEffect, useMemo, useReducer } from 'react';
+import {
+    createContext,
+    useCallback,
+    useEffect,
+    useMemo,
+    useReducer,
+} from 'react';
 import PropTypes from 'prop-types';
 
 import { acoesCarrinho, carrinhoReducer } from '../utils/carrinho';
@@ -77,9 +83,10 @@ export function CarrinhoProvider({ children }) {
     }
 
     // Limpa o carrinho
-    function limparCarrinho() {
+    // Mantém a referência estável para poder ser usada em efeitos.
+    const limparCarrinho = useCallback(() => {
         dispatch({ type: acoesCarrinho.LIMPAR });
-    }
+    }, []);
 
     // Calcula a quantidade total de unidades
     const quantidadeTotal = useMemo(() => {
